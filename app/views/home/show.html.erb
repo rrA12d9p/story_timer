@@ -1,14 +1,28 @@
+<%= form_tag('/websocket') do %>
+	<%= text_field_tag 'Task' %>
+	<%= submit_tag 'Submit' %>
+<% end %>
+
 <script type="text/javascript">
-	var task = {
-	  name: 'Start taking advantage of WebSockets',
-	  completed: false
-	}
+	$('form').on('submit', function(event){
+		event.preventDefault();
+		var taskInput = $('[name="Task"]');
+		var taskName = taskInput.val();
+		taskInput.val('');
 
-	var dispatcher = new WebSocketRails('localhost:3000/websocket');
+		var task = {
+			name: taskName
+		}
 
-	dispatcher.trigger('tasks.create', task);
+		var dispatcher = new WebSocketRails('localhost:3000/websocket');
 
-	dispatcher.bind('tasks.create_success', function(task) {
-	  console.log('successfully created ' + task.name);
+		dispatcher.trigger('tasks.create', task);
+
+		dispatcher.bind('tasks.create_success', function(task) {
+		  console.log('successfully created ' + task.name);
+		});
+
 	});
+
+	
 </script>
