@@ -1,2 +1,14 @@
-<h1>Home#show</h1>
-<p>Find me in app/views/home/show.html.erb</p>
+<script type="text/javascript">
+	var task = {
+	  name: 'Start taking advantage of WebSockets',
+	  completed: false
+	}
+
+	var dispatcher = new WebSocketRails('localhost:3000/websocket');
+
+	dispatcher.trigger('tasks.create', task);
+
+	dispatcher.bind('tasks.create_success', function(task) {
+	  console.log('successfully created ' + task.name);
+	});
+</script>
